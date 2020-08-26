@@ -65,7 +65,7 @@ var handleOperation = (event) => {
                 break;
 
             case "op-multiply":
-                setResult(operationResult.innerText = multiply(op1(), op2()));
+                setResult(multiply(op1(), op2()));
                 break;
         }
     }
