@@ -28,6 +28,11 @@ var validOperand = (operand) => isNaN(operand) ? false : true;
 // Valida que el dividendo de una división no sea 0 
 var validDividend = (dividend) => dividend == 0 ? false : true; 
 
+
+// Funcion: setResult
+// Visualiza en el campo el resultado de la operacion 
+var setResult = (result) => operationResult.innerText = result; 
+
 // Funcion: handleOperation
 // Realiza la operación correspondiente al boton de operacion pulsado
 var handleOperation = (event) => {
@@ -44,19 +49,19 @@ var handleOperation = (event) => {
                 if (!validDividend(op2())) 
                     errorMessage.innerText = "Dividendo no puede ser 0 en una division"
                 else 
-                    operationResult.innerText = divide(op1(), op2());
+                    setResult(divide(op1(), op2()));
                 break;
             
             case "op-add":
-                operationResult.innerText = add(op1(), op2());
+                setResult(add(op1(), op2()));
                 break;
 
             case "op-substract":
-                operationResult.innerText = substract(op1(), op2());
+                setResult(substract(op1(), op2()));
                 break;
 
             case "op-multiply":
-                operationResult.innerText = multiply(op1(), op2());
+                setResult(operationResult.innerText = multiply(op1(), op2()));
                 break;
         }
     }
