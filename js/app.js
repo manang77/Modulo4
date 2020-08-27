@@ -3,75 +3,44 @@ var op2 = () => parseInt(document.getElementById("secondOperand").value);
 var errorMessage = document.getElementById("errorMessage");
 var operationResult = document.getElementById("operationResult");
 
-// Funcion: add
-// Devuelve la suma dos numeros recbidos por parametro
+// Funciones para realizar operaciones aritmeticas
 var add = (operand1, operand2) => operand1 + operand2;
-
-// Funcion: substract
-// Devuelve el resultado de restar el segundo parametro del primero 
 var substract = (operand1, operand2) => operand1 - operand2;
-
-// Funcion: multiply
-// Devuelve el producto dos numeros recbidos por parametro
 var multiply = (operand1, operand2) => operand1 * operand2;
-
-// Funcion: divide
-// Devuelve el resultado de dividir el primer parametro por el segundo 
 var divide = (operand1, operand2) => operand1 / operand2;
 
-// Funcion: validOperand
-// Valida que el parametro de una operación sea un valor numerico 
-//var validOperand = (operand) => operand.trim() == "" || isNaN(operand.trim()) ? false : true;
-var validOperand = (operand) => isNaN(operand) ? false : true;
-
-// Funcion: validDividend
-// Valida que el dividendo de una división no sea 0 
-var validDividend = (dividend) => dividend == 0 ? false : true; 
-
-// Funcion: setResult
-// Visualiza en el campo el resultado de la operacion 
+// Funciones visualizacion resultado  
 var setResult = (result) => operationResult.innerText = result; 
-
-// Funcion: setError
-// Visualiza en el campo de error un mensaje  
 var setError = (error) => errorMessage.innerText = error; 
 
+//Funciones validacion de los operandos
+var validOperand = (operand) => isNaN(operand) ? false : true;
+var validDividend = (dividend) => dividend == 0 ? false : true; 
 
-// Funcion: handleOperation
-// Realiza la operación correspondiente al boton de operacion pulsado
-var handleOperation = (event) => {
-    setError("");
+function validOperands(isDivision) {
+    var valid = true;
+
     setResult("");
-
-    //Valida que los operandos son valores validos
+    setError("");
+    
     if (!validOperand(op1()) || !validOperand(op2())) {
-      setError("Se deben informar los dos operandos con valor numerico");
-    } else {    
-        switch (event.target.id) {
-            case "op-divide": 
-                //Valida que el valor del dividendo sea valido
-                if (!validDividend(op2())) 
-                    setError("Dividendo no puede ser 0 en una division");
-                else 
-                    setResult(divide(op1(), op2()));
-                break;
-            
-            case "op-add":
-                setResult(add(op1(), op2()));
-                break;
+        setError("Se deben informar los dos operandos con valor numerico");
+        valid = false;
+    } else if (isDivision && !validDividend(op2())) {
+        setError("Dividendo no puede ser 0 en una division");
+        valid = false;
+    }    
+    return valid;
+}
 
-            case "op-substract":
-                setResult(substract(op1(), op2()));
-                break;
+// Funcion que valida operando y ejecuta operacion aritmetica si son correctos
+function performOperation(operation, isDivision = false)  {
+    if (validOperands(isDivision)) 
+    setResult(operation(op1(), op2()));
+}
 
-            case "op-multiply":
-                setResult(multiply(op1(), op2()));
-                break;
-        }
-    }
-};
-
-document.getElementById("op-add").addEventListener("click", handleOperation);
-document.getElementById("op-substract").addEventListener("click", handleOperation);
-document.getElementById("op-multiply").addEventListener("click", handleOperation);
-document.getElementById("op-divide").addEventListener("click", handleOperation);
+// Asocia eventos a botones de operaciones aritmeticas y lanza la validacion/operacion
+document.getElementById("op-add").addEventListener("click", function() {performOperation(add)});
+document.getElementById("op-substract").addEventListener("click", function() {performOperation(substract)});
+document.getElementById("op-multiply").addEventListener("click", function() {performOperation(multiply)});
+document.getElementById("op-divide").addEventListener("click", function() {performOperation(divide, true)});
